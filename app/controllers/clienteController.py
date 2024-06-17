@@ -11,7 +11,7 @@ async def create_cliente(nome: str, email: str, cpf: str):
 
 
 # GET/{id} Apenas 1 cliente
-async def get_clientes():
+async def get_cliente_by_id():
     pass
 
 
