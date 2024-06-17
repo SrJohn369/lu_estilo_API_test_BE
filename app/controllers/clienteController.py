@@ -1,4 +1,4 @@
-from app.models.cliente import database, cliente
+from app.models.clienteModel import database, cliente
 from sqlalchemy import select
 
 
