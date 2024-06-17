@@ -1,25 +1,14 @@
-import os
 import uuid
 
-from sqlalchemy import Column, String, Table, MetaData, PrimaryKeyConstraint
-from databases import Database
-from dotenv import load_dotenv
-
-
-# carrrega variaveis de ambiente
-load_dotenv()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-database = Database(DATABASE_URL)
-metadata = MetaData()
+from sqlalchemy import Column, String, PrimaryKeyConstraint
+from app.db.database import Base
 
 # Criar tabela clientes
-cliente = Table(
-    "clientes", metadata,
-    Column("id", String, default=lambda: str(uuid.uuid4()), unique=True),
-    Column("nome", String),
-    Column("email", String),
-    Column("cpf", String),
+class Cliente(Base):
+    __tablename__ = "clientes"
+    
+    id = Column(String, default=lambda: str(uuid.uuid4()), unique=True),
+    nome = Column(String, nullable=False),
+    email = Column(String,  nullable=False),
+    cpf = Column(String, nullable=False),
     PrimaryKeyConstraint("email", "cpf", name="pk_cliente")
-)
