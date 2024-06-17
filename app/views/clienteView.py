@@ -30,9 +30,9 @@ def create_user(cliente: ClienteCadastro, db: Session = Depends(get_db)):
 def read_clientes(
         skip: int = 0, 
         limit: int = 15, 
-        name: Optional[str] = Query(None), 
+        nome: Optional[str] = Query(None), 
         email: Optional[str] = Query(None), 
         db: Session = Depends(get_db)):
-    clientes = clienteController.get_clientes(db=db, skip=skip, limit=limit)
+    clientes = clienteController.get_clientes(db=db, skip=skip, limit=limit, nome=nome, email=email)
     return clientes
 
