@@ -14,5 +14,5 @@ class ClienteCadastro(ClienteBase):
 class Cliente(ClienteBase):
     id: str
     
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True

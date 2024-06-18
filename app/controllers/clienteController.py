@@ -1,50 +1,51 @@
-from app.schemas.clienteSchema import Cliente
+from app.schemas.clienteSchema import Cliente as ClienteSchema
 from app.schemas.clienteSchema import ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
 
 from sqlalchemy.orm import Session
 
 
 # GET/ todos os clientes, função com suporte para filtragem
-async def get_clientes(
+def get_clientes(
         db: Session, 
         skip: int = 0, 
         limit: int = 10, 
-        name: str = None,
+        nome: str = None,
         email: str = None):
     
     # Sem filtro
-    query = db.query(Cliente)
+    query = db.query(ClienteModel)
     # Filtro para nome
-    if name:
-        query = query.filter(Cliente.name.ilike(f"%{name}%"))
+    if nome:
+        query = query.filter(ClienteModel.nome.ilike(f"%{nome}%"))
     # Filtro para email
     if email:
-        query = query.filter(Cliente.email.ilike(f"%{email}%"))
+        query = query.filter(ClienteModel.email.ilike(f"%{email}%"))
     
-    return await query.offset(skip).limit(limit).all()
+    return query.offset(skip).limit(limit).all()
 
 
 # GET/{id} Apenas 1 cliente
-async def get_cliente_by_id(db: Session, id: str):
-    return await db.query(Cliente).where(Cliente.id == id)
+def get_cliente_by_id(db: Session, id: str):
+    return db.query(ClienteModel).where(ClienteModel.id == id)
 
 
 # POST/ cria um cliente
-async def create_cliente(cliente: ClienteCadastro, db: Session):
+def create_cliente(cliente: ClienteCadastro, db: Session):
     # cadastrar cliente
-    db_cliente = Cliente(email=cliente.email, nome=cliente.nome, cpf=cliente.cpf)
+    db_cliente = ClienteModel(email=cliente.email, nome=cliente.nome, cpf=cliente.cpf)
     db.add(db_cliente)
-    await db.commit()
-    await db.refresh(db_cliente)
+    db.commit()
+    db.refresh(db_cliente)
     
     return db_cliente
 
 
 # PUT/ Atualiza 
-async def put_cliente():
+def put_cliente():
     pass
 
 
 # DELETE/ Exclui cliente
-async def delete_cliente():
+def delete_cliente():
     pass

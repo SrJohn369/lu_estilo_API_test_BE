@@ -9,18 +9,20 @@ from sqlalchemy.orm import Session
 
 from app.controllers import clienteController
 from app.schemas.clienteSchema import Cliente, ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
 from app.db.database import get_db
 
 router = APIRouter()
 
 # POST/ cria um cliente
 @router.post("/clientes/", response_model=Cliente, tags=["clientes"])
-def create_user(cliente: ClienteCadastro, db: Session = Depends(get_db)):
+def create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db)):
     # Verifica se já existe
-    db_cliente = db.query(Cliente) \
-            .where(Cliente.email == cliente.email or Cliente.cpf == cliente.cpf)
+    db_cliente = db.query(ClienteModel) \
+            .where((ClienteModel.email == cliente.email)).first()
     if db_cliente:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já cadastrado")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                            detail=f"Email já cadastrado")
     
     return clienteController.create_cliente(db=db, cliente=cliente)
 

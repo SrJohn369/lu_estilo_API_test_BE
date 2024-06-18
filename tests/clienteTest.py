@@ -12,44 +12,52 @@ from app.models.clienteModel import Cliente
 
 
 # -------------- TEST DATABASE ------------------- #
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./db.sqlite3"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # -------------- ============= ------------------- #
 
-
-@pytest.fixture(scope="module")
-def client():
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
     Base.metadata.create_all(bind=engine)
-    with TestClient(app) as client:
-        yield client
+    yield
     Base.metadata.drop_all(bind=engine)
 
-
-@pytest.fixture(scope="function")
+@pytest.fixture
 def db_session():
-    session = SessionLocal()
-    yield session
-    session.close()
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
+@pytest.fixture
+def client():
+    def override_get_db():
+        try:
+            db = TestingSessionLocal()
+            yield db
+        finally:
+            db.close()
 
-# Sobrescrevendo a dependência get_db para usar SQLite para testes
-app.dependency_overrides[get_db] = db_session
+    app.dependency_overrides[get_db] = override_get_db
+    with TestClient(app) as c:
+        yield c
 
 
 def test_post_clientes(client):
     response = client.post(
         "/clientes/", 
         json={
-                "email": "test@example.com", 
-                "name": "Test User", 
-                "cpf": "12345678901", 
-                "password": "password"
+                "email": "test4@example.com", 
+                "nome": "Test User", 
+                "cpf": "123402678901", 
             }
     )
+    print(response.text)
     assert response.status_code == 200
-    assert response.json()["email"] == "test@example.com"
+    assert response.json()["email"] == "test4@example.com"
 
 
 
@@ -57,17 +65,15 @@ def test_get_clientes(client, db_session):
     db_session.add(
         Cliente(
             email="alice@example.com", 
-            name="Alice", 
-            cpf="12345678902", 
-            hashed_password="password"
+            nome="Alice", 
+            cpf="12345678902"
         )
     )
     db_session.add(
         Cliente(
             email="bob@example.com", 
-            name="Bob", 
-            cpf="12345678903", 
-            hashed_password="password"
+            nome="Bob", 
+            cpf="12345678903"
         )
     )
     db_session.commit()
@@ -77,7 +83,7 @@ def test_get_clientes(client, db_session):
     users = response.json()
     assert len(users) >= 2
 
-    response = client.get("/users/?nome=Alice")
+    response = client.get("/clientes/?nome=Alice")
     assert response.status_code == 200
     users = response.json()
     assert len(users) == 1
