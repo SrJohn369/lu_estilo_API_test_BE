@@ -1,10 +1,11 @@
 import sentry_sdk
+from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
 
 from app.views import clienteView
-from app.db.database import database
+from app.db.database import database, init_db
 
 
 sentry_sdk.init(
@@ -14,8 +15,20 @@ sentry_sdk.init(
 )
 
 app = FastAPI()
+app.add_middleware(SentryAsgiMiddleware)
 
 app.include_router(clienteView.router)
+
+
+@app.on_event("startup")
+async def startup():
+    await database.connect()
+    init_db()
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
 
 # integração com Sentry

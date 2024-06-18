@@ -11,12 +11,12 @@ from app.db.database import Base, SessionLocal
 from app.models.clienteModel import Cliente
 
 
-# -------------- TEST DATABASE ------------------- #
-SQLALCHEMY_DATABASE_URL = "sqlite:///./db.sqlite3"
+# # -------------- TEST DATABASE ------------------- #
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./db.sqlite3"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-# -------------- ============= ------------------- #
+# engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+# TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# # -------------- ============= ------------------- #
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_database():
@@ -26,7 +26,8 @@ def setup_database():
 
 @pytest.fixture
 def db_session():
-    db = TestingSessionLocal()
+    # db = TestingSessionLocal()
+    db = SessionLocal()
     try:
         yield db
     finally:
@@ -36,7 +37,7 @@ def db_session():
 def client():
     def override_get_db():
         try:
-            db = TestingSessionLocal()
+            db = SessionLocal()
             yield db
         finally:
             db.close()
