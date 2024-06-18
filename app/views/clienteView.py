@@ -30,11 +30,10 @@ def create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db)):
 # GET/ todos os clientes, função com suporte para filtragem
 @router.get("/clientes/", response_model=List[Cliente], tags=["clientes"])
 def read_clientes(
-        skip: int = 0, 
         limit: int = 15, 
         nome: Optional[str] = Query(None), 
         email: Optional[str] = Query(None), 
         db: Session = Depends(get_db)):
-    clientes = clienteController.get_clientes(db=db, skip=skip, limit=limit, nome=nome, email=email)
+    clientes = clienteController.get_clientes(db=db, limit=limit, nome=nome, email=email)
     return clientes
 

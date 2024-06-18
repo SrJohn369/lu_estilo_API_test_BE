@@ -16,7 +16,6 @@ sentry_sdk.init(
 
 app = FastAPI()
 app.add_middleware(SentryAsgiMiddleware)
-
 app.include_router(clienteView.router)
 
 

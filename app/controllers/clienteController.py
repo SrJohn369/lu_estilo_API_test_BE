@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 # GET/ todos os clientes, função com suporte para filtragem
 def get_clientes(
         db: Session, 
-        skip: int = 0, 
         limit: int = 10, 
         nome: str = None,
         email: str = None):
@@ -22,7 +21,7 @@ def get_clientes(
     if email:
         query = query.filter(ClienteModel.email.ilike(f"%{email}%"))
     
-    return query.offset(skip).limit(limit).all()
+    return query.limit(limit).all()
 
 
 # GET/{id} Apenas 1 cliente
