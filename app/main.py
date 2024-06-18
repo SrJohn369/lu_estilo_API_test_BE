@@ -1,5 +1,4 @@
 import sentry_sdk
-from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException
@@ -15,7 +14,6 @@ sentry_sdk.init(
 )
 
 app = FastAPI()
-app.add_middleware(SentryAsgiMiddleware)
 app.include_router(clienteView.router)
 
 
