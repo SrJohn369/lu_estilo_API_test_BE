@@ -56,7 +56,6 @@ def test_post_clientes(client):
                 "cpf": "123402678901", 
             }
     )
-    print(response.text)
     assert response.status_code == 200
     assert response.json()["email"] == "test4@example.com"
 
