@@ -36,7 +36,7 @@ Esta API é desenvolvida com FastAPI e será usada para fornecer dados e funcion
 facilitar a comunicação entre o time comercial, os clientes e a empresa.  
 
 ## Estrutura  
-A API tem uma estrutura montanda no padrão MVC:
+A API tem uma estrutura montada no padrão MVC:
 ```
 lu_estilo_API_test_Be/
 ├── app/
@@ -86,6 +86,24 @@ lu_estilo_API_test_Be/
 🚧 em construção 🚧
 
 ## Documentação
+Esta API depende das libs:  
+- `fastapi`
+- `psycopg2` & `psycopg2-binary`
+- `SQLAlchemy`
+- `databases`
+- `python-dotenv`
+- `alembic`
+- `pytest`
+- `jose`
+- `passlib`
+- `uvicorn`
+
+Dentre outras que estão listados e devem ser instaladas usando o comando:
+```bash
+pip install -r requirements.txt
+```
+
+
 ### main.py
 🚧 em construção 🚧
 ### clienteModel.py
