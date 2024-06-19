@@ -98,7 +98,7 @@ GET
 ##### Query Parameters
 - `nome` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *nome* fornecido.
-      - Exemplo: `/clientes/?&nome=joao`
+      - Exemplo: `/clientes/?nome=joao`
 - `email` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *email* fornecido.
       - Exemplo: `/clientes/?email=claudia.fernanda@email.com`
@@ -130,7 +130,12 @@ Response Body:
 ]
 ```
 </details>  
+
+<details>
   
+  <summary>POST/clientes</summary>
+  
+</details>
 ### Produtos 
 🚧 em construção 🚧
 ### Pedidos
