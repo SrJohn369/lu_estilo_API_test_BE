@@ -18,7 +18,7 @@
    - [Produtos](#Produtos)
    - [Pedidos](#Pedidos)
 - [Documentação](#Documentação)
-  - app/[main.py](#main.py)
+  - app/[main.py](#main)
   - app/models/[clienteModel.py](#clienteModel.py)
   - app/views/[clienteView.py](#clienteView.py)
   - app/controllers/[clienteController.py](#clienteController.py)
@@ -86,15 +86,15 @@ lu_estilo_API_test_Be/
 🚧 em construção 🚧
 
 ## Documentação
-### main.py
+### main
 🚧 em construção 🚧
-### clienteModel.py
+### clienteModel
 🚧 em construção 🚧
-### clienteView.py
+### clienteView
 🚧 em construção 🚧
-### clienteController.py
+### clienteController
 🚧 em construção 🚧
-### database.py
+### database
 🚧 em construção 🚧
 ### auth.py
 🚧 em construção 🚧
