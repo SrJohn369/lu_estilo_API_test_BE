@@ -84,3 +84,25 @@ lu_estilo_API_test_Be/
 🚧 em construção 🚧
 ### Pedidos
 🚧 em construção 🚧
+
+## Documentação
+### main.py
+🚧 em construção 🚧
+### clienteModel.py
+🚧 em construção 🚧
+### clienteView.py
+🚧 em construção 🚧
+### clienteController.py
+🚧 em construção 🚧
+### database.py
+🚧 em construção 🚧
+### auth.py
+🚧 em construção 🚧
+### jwt.py
+🚧 em construção 🚧
+### clienteSchema.py
+🚧 em construção 🚧
+### configTest.py
+🚧 em construção 🚧
+### clienteTest.py
+🚧 em construção 🚧
