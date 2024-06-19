@@ -78,6 +78,8 @@ lu_estilo_API_test_Be/
 ## Endpoints  
 ### Autenticação
 🚧 em construção 🚧
+
+
 <details>
   
   <summary>POST/auth/login</summary>
@@ -95,6 +97,8 @@ lu_estilo_API_test_Be/
   <summary>POST/refresh-token</summary>
   
 </details>  
+
+
 ### Clientes
 🚧 em construção 🚧
 
@@ -163,8 +167,74 @@ Response Body:
 
 ### Produtos 
 🚧 em construção 🚧
+
+<details>
+  
+  <summary>GET/produtos</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>GET/produtos/{id}</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>POST/produtos</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>PUT/produtos/{id}</summary>
+  
+</details>  
+
+
+<details>
+  
+  <summary>DELETE/produtos/{id}</summary>
+  
+</details>  
+
+
 ### Pedidos
 🚧 em construção 🚧
+
+
+<details>
+  
+  <summary>GET/ordens</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>GET/ordens/{id}</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>POST/ordens</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>PUT/ordens</summary>
+  
+</details>  
+
+
+<details>
+  
+  <summary>DELETE/ordens</summary>
+  
+</details>  
+
 
 ## Documentação
 Esta API depende das libs:  
