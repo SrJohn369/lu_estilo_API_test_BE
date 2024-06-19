@@ -17,7 +17,17 @@
    - [Clientes](#Clientes)
    - [Produtos](#Produtos)
    - [Pedidos](#Pedidos)
-
+- [Documentação](#Documentação)
+  - app/[main.py](#main.py)
+  - app/models/[clienteModel.py](#clienteModel.py)
+  - app/views/[clienteView.py](#clienteView.py)
+  - app/controllers/[clienteController.py](#clienteController.py)
+  - app/db/[database.py](#database.py)
+  - app/auth/[auth.py](#auth.py)
+  - app/auth/[jwt.py](#jwt.py)
+  - app/schemas/[clienteSchema.py](#clienteSchema.py)
+  - tests/[configTest.py](#configTest.py)
+  - tests/[clienteTest.py](#clienteTest.py)
 
 ## Descrição
 
@@ -53,16 +63,24 @@ lu_estilo_API_test_Be/
 │       └── clienteSchema.py
 ├── tests/
 │   ├── __init__.py
+│   ├── configTest.py
 │   └── clienteTest.py
 ├── requirements.txt
 ├── alembic.ini
-├── alembic/
-│   ├── env.py
-│   ├── README
-│   ├── script.py.mako
-│   └── versions/
-└── .env
+└── alembic/
+    ├── env.py
+    ├── README
+    ├── script.py.mako
+    └── versions/
 ```
 
 
 ## Endpoints  
+### Autenticação
+🚧 em construção 🚧
+### Clientes
+🚧 em construção 🚧
+### Produtos 
+🚧 em construção 🚧
+### Pedidos
+🚧 em construção 🚧
