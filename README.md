@@ -98,10 +98,10 @@ GET
 ##### Query Parameters
 - `nome` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *nome* fornecido.
-      - Exemplo: `/clientes/?limit=15&nome=joao`
+      - Exemplo: `/clientes/?&nome=joao`
 - `email` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *email* fornecido.
-      - Exemplo: `/clientes/?limit=15&email=claudia.fernanda@email.com`
+      - Exemplo: `/clientes/?email=claudia.fernanda@email.com`
 - `limit` (Valor Padrão):
     - Parâmetro padrão das requests GET para clientes que trará apenas 15 resgistros , ou seja, 15 clientes.
         - Exemplo: `/clientes/?limit=15`
