@@ -138,8 +138,6 @@ Response Body:
 ```
 </details>  
 
----
-
 <details>
   
   <summary>POST/clientes</summary>
