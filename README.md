@@ -276,6 +276,22 @@ pip install -r requirements.txt
 
 ### main.py
 🚧 em construção 🚧
+##### DESCRIÇÃO 
+
+---
+
+Arquivo principal da aplicação.  
+Ao usar o comando:
+```bash
+fastapi dev main.py
+```
+O framework irá identificar a instância do FastAPI() e iniciará todo trabalho.  
+
+---
+
+##### CÓDIGO 
+```python
+```
 ### clienteModel.py
 🚧 em construção 🚧
 ### clienteView.py
