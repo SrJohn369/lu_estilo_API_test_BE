@@ -18,16 +18,16 @@
    - [Produtos](#Produtos)
    - [Pedidos](#Pedidos)
 - [Documentação](#Documentação)
-  - app/[main.py](#main)
-  - app/models/[clienteModel.py](#clienteModel.py)
-  - app/views/[clienteView.py](#clienteView.py)
-  - app/controllers/[clienteController.py](#clienteController.py)
-  - app/db/[database.py](#database.py)
-  - app/auth/[auth.py](#auth.py)
-  - app/auth/[jwt.py](#jwt.py)
-  - app/schemas/[clienteSchema.py](#clienteSchema.py)
-  - tests/[configTest.py](#configTest.py)
-  - tests/[clienteTest.py](#clienteTest.py)
+  - app/[main.py](#mainpy)
+  - app/models/[clienteModel.py](#clienteModelpy)
+  - app/views/[clienteView.py](#clienteViewpy)
+  - app/controllers/[clienteController.py](#clienteControllerpy)
+  - app/db/[database.py](#databasepy)
+  - app/auth/[auth.py](#authpy)
+  - app/auth/[jwt.py](#jwtpy)
+  - app/schemas/[clienteSchema.py](#clienteSchemapy)
+  - tests/[configTest.py](#configTestpy)
+  - tests/[clienteTest.py](#clienteTestpy)
 
 ## Descrição
 
@@ -86,15 +86,15 @@ lu_estilo_API_test_Be/
 🚧 em construção 🚧
 
 ## Documentação
-### main
+### main.py
 🚧 em construção 🚧
-### clienteModel
+### clienteModel.py
 🚧 em construção 🚧
-### clienteView
+### clienteView.py
 🚧 em construção 🚧
-### clienteController
+### clienteController.py
 🚧 em construção 🚧
-### database
+### database.py
 🚧 em construção 🚧
 ### auth.py
 🚧 em construção 🚧
