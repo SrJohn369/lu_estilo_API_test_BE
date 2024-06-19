@@ -78,6 +78,23 @@ lu_estilo_API_test_Be/
 ## Endpoints  
 ### Autenticação
 🚧 em construção 🚧
+<details>
+  
+  <summary>POST/auth/login</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>POST/auth/register</summary>
+  
+</details>  
+
+<details>
+  
+  <summary>POST/refresh-token</summary>
+  
+</details>  
 ### Clientes
 🚧 em construção 🚧
 
