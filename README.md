@@ -80,6 +80,57 @@ lu_estilo_API_test_Be/
 🚧 em construção 🚧
 ### Clientes
 🚧 em construção 🚧
+
+
+<details>
+  
+<summary>GET/clientes</summary>
+
+#### Descrição
+Este endpoint retornará todos os clientes com limite de 15 registros por padrão no parâmentro limit
+#### URL
+`/clientes`
+#### Método HTTP
+GET
+#### Parâmetros
+##### Path Parameters
+- Sem parâmetros obrigatórios
+##### Query Parameters
+- `nome` (Opcional):
+   - irá filtrar clientes trazendo apenas o dados no cliente com *nome* fornecido.
+      - Exemplo: `/clientes/?limit=15&nome=joao`
+- `email` (Opcional):
+   - irá filtrar clientes trazendo apenas o dados no cliente com *email* fornecido.
+      - Exemplo: `/clientes/?limit=15&email=claudia.fernanda@email.com`
+- `limit` (Valor Padrão):
+    - Parâmetro padrão das requests GET para clientes que trará apenas 15 resgistros , ou seja, 15 clientes.
+        - Exemplo: `/clientes/?limit=15`
+
+#### Respostas
+Curl
+```Curl
+curl -X 'GET' \
+  'http://localhost:8000/clientes/?limit=15' \
+  -H 'accept: application/json'
+```
+Request URL
+```url
+http://localhost:8000/clientes/?limit=15&nome=joao&email=claudia.fernanda@email.com
+```
+Status code: 200 OK  
+Response Body:  
+```JSON
+[
+  {
+    "email": "claudia.fernanda@email.com",
+    "nome": "joao",
+    "cpf": "345.567.999-00",
+    "id": "206457ab-4c04-4c26-82c7-49d032158e72"
+  }
+]
+```
+</details>  
+  
 ### Produtos 
 🚧 em construção 🚧
 ### Pedidos
