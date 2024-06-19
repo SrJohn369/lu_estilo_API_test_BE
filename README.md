@@ -75,7 +75,8 @@ lu_estilo_API_test_Be/
 ```
 
 
-## Endpoints  
+## Endpoints
+  
 ### Autenticação
 🚧 em construção 🚧
 
@@ -161,9 +162,27 @@ Response Body:
 
 <details>
   
+  <summary>GET/clientes/{id}</summary>
+  
+</details>
+
+<details>
+  
   <summary>POST/clientes</summary>
   
 </details>  
+
+<details>
+  
+  <summary>PUT/clientes/{id}</summary>
+  
+</details>
+
+<details>
+  
+  <summary>DELETE/clientes/{id}</summary>
+  
+</details>
 
 ### Produtos 
 🚧 em construção 🚧
