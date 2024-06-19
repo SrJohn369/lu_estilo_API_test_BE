@@ -87,11 +87,17 @@ lu_estilo_API_test_Be/
 <summary>GET/clientes</summary>
 
 #### Descrição
-Este endpoint retornará todos os clientes com limite de 15 registros por padrão no parâmentro limit
+Este endpoint retornará todos os clientes com limite de 15 registros por padrão no parâmentro limit  
+
+---  
 #### URL
 `/clientes`
+
+---  
 #### Método HTTP
-GET
+GET  
+
+---  
 #### Parâmetros
 ##### Path Parameters
 - Sem parâmetros obrigatórios
@@ -105,7 +111,8 @@ GET
 - `limit` (Valor Padrão):
     - Parâmetro padrão das requests GET para clientes que trará apenas 15 resgistros , ou seja, 15 clientes.
         - Exemplo: `/clientes/?limit=15`
-
+          
+---  
 #### Respostas
 Curl
 ```Curl
@@ -131,11 +138,14 @@ Response Body:
 ```
 </details>  
 
+---
+
 <details>
   
   <summary>POST/clientes</summary>
   
-</details>
+</details>  
+
 ### Produtos 
 🚧 em construção 🚧
 ### Pedidos
