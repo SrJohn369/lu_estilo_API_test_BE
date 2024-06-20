@@ -30,11 +30,15 @@ def create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db)):
 # GET/ todos os clientes, função com suporte para filtragem
 @router.get("/clientes/", response_model=List[Cliente], tags=["clientes"])
 def read_clientes(
+        offset: int = 0,
         limit: int = 15, 
         nome: Optional[str] = Query(None), 
         email: Optional[str] = Query(None), 
         db: Session = Depends(get_db)):
-    clientes = clienteController.get_clientes(db=db, limit=limit, nome=nome, email=email)
+    clientes = clienteController.get_clientes(db=db, offset=offset, limit=limit, nome=nome, email=email)
+    if clientes == []:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                             detail="não há clientes com esse esses parâmentros")
     return clientes
 
 
@@ -43,5 +47,6 @@ def read_clientes(
 def read_clientes_by_id( id: str, db: Session = Depends(get_db)):
     cliente = clienteController.get_cliente_by_id(db=db, id=id)
     if cliente is None:
-        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente não encontrado!")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                             detail="Cliente não encontrado!")
     return cliente
