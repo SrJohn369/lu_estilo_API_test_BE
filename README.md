@@ -165,7 +165,8 @@ Response Body:
 <details>
   
   <summary>GET/clientes/{id}</summary>
-  #### Descrição
+
+#### Descrição  
 Este endpoint retornará todos os clientes com limite de 15 registros por padrão no parâmentro limit  
 
 ---  
@@ -276,6 +277,12 @@ Response Body:
 
 <details>
   
+  <summary>PATCH/clientes/{id}</summary>
+  
+</details>
+
+<details>
+  
   <summary>DELETE/clientes/{id}</summary>
   
 </details>
@@ -307,7 +314,12 @@ Response Body:
   
 </details>  
 
-
+details>
+  
+  <summary>PATCH/produtos/{id}</summary>
+  
+</details>  
+
 <details>
   
   <summary>DELETE/produtos/{id}</summary>
