@@ -78,7 +78,7 @@ lu_estilo_API_test_Be/
 
 
 ## Endpoints
-  
+A documentação dos endpoints tambem podem ser vzualizada de forma dinamica no Swaager [aqui]().
 ### Autenticação
 🚧 em construção 🚧
 
@@ -258,6 +258,7 @@ Response Body:
 
 
 ## Documentação
+
 Esta API depende das libs:  
 - `fastapi`
 - `psycopg2` & `psycopg2-binary`
