@@ -34,7 +34,9 @@
 A Lu Estilo é uma empresa de confecção que está buscando novas oportunidades de negócio. 
 Esta API é desenvolvida com FastAPI e será usada para fornecer dados e funcionalidades para 
 facilitar a comunicação entre o time comercial, os clientes e a empresa.  
-
+  
+Tudo que está documentado de models, controllers, views, schemas e tests são base para os outros arquivos como produtos, usuários e pedidos.  
+  
 ## Estrutura  
 A API tem uma estrutura montada no padrão MVC:
 ```
