@@ -421,7 +421,7 @@ Define uma chave primária composta pelas colunas email e cpf.
 ---
   
 ### clienteView.py
-🚧 em construção 🚧
+
 ##### DESCRIÇÃO
 
 Este código define endpoints para uma API de gerenciamento de clientes usando FastAPI. Ele permite a criação e leitura de registros de clientes no banco de dados, com suporte para filtragem.
@@ -549,6 +549,145 @@ O que a Função faz:
 
 ### clienteController.py
 🚧 em construção 🚧
+##### DESCRIÇÃO
+
+Este código define funções de controlador para gerenciar clientes em um banco de dados usando SQLAlchemy. As funções permitem buscar clientes com filtros opcionais, buscar um cliente por ID e criar um novo cliente.
+
+---
+
+##### CÓDIGO
+```python
+from app.schemas.clienteSchema import Cliente as ClienteSchema
+from app.schemas.clienteSchema import ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
+
+from sqlalchemy.orm import Session
+
+
+# GET/ todos os clientes, função com suporte para filtragem
+def get_clientes(
+        db: Session, 
+        limit: int = 10, 
+        nome: str = None,
+        email: str = None):
+    
+    # Sem filtro
+    query = db.query(ClienteModel)
+    # Filtro para nome
+    if nome:
+        query = query.filter(ClienteModel.nome.ilike(f"%{nome}%"))
+    # Filtro para email
+    if email:
+        query = query.filter(ClienteModel.email.ilike(f"%{email}%"))
+    
+    return query.limit(limit).all()
+
+
+# GET/{id} Apenas 1 cliente
+def get_cliente_by_id(db: Session, id: str):
+    return db.query(ClienteModel).where(ClienteModel.id == id)
+
+
+# POST/ cria um cliente
+def create_cliente(cliente: ClienteCadastro, db: Session):
+    # cadastrar cliente
+    db_cliente = ClienteModel(email=cliente.email, nome=cliente.nome, cpf=cliente.cpf)
+    db.add(db_cliente)
+    db.commit()
+    db.refresh(db_cliente)
+    
+    return db_cliente
+```
+  
+Detalhamento do Código
+```python
+from app.schemas.clienteSchema import Cliente as ClienteSchema
+from app.schemas.clienteSchema import ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
+
+from sqlalchemy.orm import Session
+```
+  
+Importações:
+- Importa os [esquemas](#clienteSchemapy) Cliente e ClienteCadastro de clienteSchema.  
+- Importa o [modelo](#databasepy) Cliente de clienteModel.  
+- Importa Session do SQLAlchemy para interagir com o banco de dados.
+  
+Função get_clientes:  
+Busca clientes no banco de dados com suporte a filtros opcionais por nome e email.
+```python
+# GET/ todos os clientes, função com suporte para filtragem
+def get_clientes(
+        db: Session,
+        offset: int = 0,
+        limit: int = 15, 
+        nome: str = None,
+        email: str = None):
+    
+    # Sem filtro
+    query = db.query(ClienteModel)
+    # Filtro para nome
+    if nome:
+        query = query.filter(ClienteModel.nome.ilike(f"%{nome}%"))
+    # Filtro para email
+    if email:
+        query = query.filter(ClienteModel.email.ilike(f"%{email}%"))
+    
+    return query.offset(offset).limit(limit).all()
+```
+  
+`db: Session`: A sessão de banco de dados.  
+`limit: int = 15`: Limite de registros a serem retornados, padrão é 15.  
+`offset: int = 0`: Define apartir de que registro devem ser retornados, padrão é 0.  
+`nome: str = None`: Filtro opcional por nome.  
+`email: str = None`: Filtro opcional por email.  
+  
+O que a Função faz:  
+- Inicia uma consulta ao banco de dados.  
+- Aplica filtros de nome e email, se fornecidos.
+- Limita o número de resultados e retorna a lista de clientes.
+  
+Função get_cliente_by_id  
+Busca um cliente no banco de dados pelo ID.
+```python
+# GET/{id} Apenas 1 cliente
+def get_cliente_by_id(db: Session, id: str):
+    return db.query(ClienteModel).where(ClienteModel.id == id)
+```
+  
+`db: Session`: A sessão de banco de dados.  
+`id: str`: O ID do cliente a ser buscado.  
+  
+O que a Função faz:  
+- Inicia uma consulta ao banco de dados filtrando pelo ID do cliente.  
+- Retorna o cliente encontrado.
+  
+Função create_cliente  
+Cria um novo cliente no banco de dados.  
+```python
+# POST/ cria um cliente
+def create_cliente(cliente: ClienteCadastro, db: Session):
+    # cadastrar cliente
+    db_cliente = ClienteModel(email=cliente.email, nome=cliente.nome, cpf=cliente.cpf)
+    db.add(db_cliente)
+    db.commit()
+    db.refresh(db_cliente)
+    
+    return db_cliente
+```
+
+`cliente: [ClienteCadastro](#clienteSchemapy)`: Os dados do cliente a ser criado.  
+`db: Session`: A sessão de banco de dados.  
+  
+O que a Função faz:  
+- Cria uma instância de ClienteModel com os dados fornecidos.
+- Adiciona a instância à sessão de banco de dados e realiza o commit.
+- Atualiza a instância do cliente com os dados do banco de dados (incluindo o ID gerado).
+- Retorna a instância do cliente criada.
+
+---  
+
+
 ### database.py
 🚧 em construção 🚧
 ### auth.py
