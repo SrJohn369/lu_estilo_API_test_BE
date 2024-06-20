@@ -1050,16 +1050,330 @@ O que a Função faz:
   
 
 ### clienteSchema.py
-🚧 em construção 🚧
+
 ##### DESCRIÇÃO
 Este código define modelos de dados para clientes usando Pydantic, especificando as validações e esquemas necessários para cadastro e representação de clientes na aplicação.  
   
 ---
   
-
 ##### CÓDIGO
+```python
+from pydantic import BaseModel, EmailStr
 
+
+class ClienteBase(BaseModel):
+    email: EmailStr
+    nome: str
+    cpf: str
+    
+    
+class ClienteCadastro(ClienteBase):
+    '''
+    O campo cpf tem limite de tamanho em 14 caracteres sendo a formatação 
+    123.456.789-10. O campos email e cpf devem ser obrigatoriamente
+    preenchidos pois são primary key
+    '''
+    pass
+
+
+class Cliente(ClienteBase):
+    id: str
+    
+    class ConfigDict:
+        from_attributes = True
+```
+  
+Detalhamento do Código:  
+Importações:  
+`BaseModel` e `EmailStr` do Pydantic: Usados para definir e validar os modelos de dados. BaseModel é a classe base para criar modelos de dados, e EmailStr é um tipo de dado específico para emails que realiza validação automática.
+  
+Classe ClienteBase:  
+Define os campos básicos comuns a todos os modelos de cliente.  
+```python
+class ClienteBase(BaseModel):
+    email: EmailStr
+    nome: str
+    cpf: str
+```
+  
+`email: EmailStr`: Campo obrigatório para o email, que é validado como um endereço de email.  
+`nome: str`: Campo obrigatório para o nome.  
+`cpf: str`: Campo obrigatório para o CPF.  
+  
+Implementação:  
+Esta classe serve como base para outros modelos, garantindo que os campos email, nome e cpf estejam presentes e sejam validados.  
+
+  
+Classe ClienteCadastro:  
+Extende ClienteBase para uso específico no cadastro de clientes. É usada uma docstring para especificar algumas restrições no swagger do fastAPI.  
+```python
+class ClienteCadastro(ClienteBase):
+    '''
+    O campo cpf tem limite de tamanho em 14 caracteres sendo a formatação 
+    123.456.789-10. O campos email e cpf devem ser obrigatoriamente
+    preenchidos pois são primary key
+    '''
+    pass
+
+```
+
+Doc String:  
+- Explica a formatação do campo cpf (14 caracteres no formato 123.456.789-10).  
+- Ressalta que os campos email e cpf são obrigatórios e usados como chaves primárias.  
+
+Implementação:  
+- Utiliza todos os campos e validações de ClienteBase sem adicionar novos campos ou validações.
+  
+---
+  
 ### configTest.py
 🚧 em construção 🚧
+##### DESCRIÇÃO
+  
+---
+  
+##### CÓDIGO
+```python
+import pytest
+
+from fastapi.testclient import TestClient
+
+from app.main import app
+from app.db.database import engine
+from app.db.database import Base, SessionLocal
+
+
+# Configuração do banco de dados para os testes
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+    Base.metadata.create_all(bind=engine)
+    yield
+    Base.metadata.drop_all(bind=engine)
+
+# Fixture para gerenciar a sessão do banco de dados
+@pytest.fixture
+def db_session():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# Fixture para o cliente de teste
+@pytest.fixture
+def client():
+    with TestClient(app) as c:
+        yield c
+```
+  
+Detalhamento do código  
+  
+Importações:  
+`pytest`: Biblioteca de testes para Python.  
+`TestClient do FastAPI`: Cliente de teste para simular requisições HTTP à aplicação FastAPI.  
+Importa a aplicação FastAPI (app) e componentes de banco de dados (engine, Base, SessionLocal) da aplicação.  
+  
+  
+Fixture setup_database:  
+Configura o banco de dados para os testes.  
+```python
+# Configuração do banco de dados para os testes
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+    Base.metadata.create_all(bind=engine)
+    yield
+    Base.metadata.drop_all(bind=engine)
+```
+  
+  
+`@pytest.fixture(scope="session", autouse=True)`: Define a fixture com escopo de sessão, executada automaticamente uma vez por sessão de testes.  
+  
+Implementação:  
+`Base.metadata.create_all(bind=engine)`: Cria todas as tabelas definidas no modelo Base antes de iniciar os testes.  
+`yield`: Pausa a execução da fixture, permitindo a execução dos testes.  
+`Base.metadata.drop_all(bind=engine)`: Remove todas as tabelas do banco de dados após a execução dos testes.  
+  
+  
+Fixture db_session:  
+Gerencia uma sessão do banco de dados para uso em testes.  
+```python
+# Fixture para gerenciar a sessão do banco de dados
+@pytest.fixture
+def db_session():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+```
+  
+  
+
+`@pytest.fixture`: Define a fixture para ser utilizada em testes individuais.  
+  
+Implementação:  
+`db = SessionLocal()`: Cria uma nova sessão do banco de dados.  
+`try`: Inicia um bloco try para utilizar a sessão.  
+`yield db`: Fornece a sessão para uso nos testes.  
+`finally`: Assegura que a sessão será fechada após o uso, liberando recursos.  
+  
+  
+Fixture client:  
+]Cria um cliente de teste para simular requisições HTTP à aplicação FastAPI.  
+```python
+# Fixture para o cliente de teste
+@pytest.fixture
+def client():
+    with TestClient(app) as c:
+        yield c
+```
+`@pytest.fixture`: Define a fixture para ser utilizada em testes individuais.  
+  
+Implementação:  
+`with TestClient(app) as c`: Cria uma instância de TestClient com a aplicação FastAPI (app).  
+`yield c`: Fornece o cliente de teste para uso nos testes.  
+  
+  ---
+  
 ### clienteTest.py
-🚧 em construção 🚧
+
+##### DESCRIÇÃO
+Este código implementa testes automatizados para uma aplicação FastAPI que gerencia clientes, utilizando pytest. Ele verifica a funcionalidade de criar clientes, lidar com duplicatas, e buscar clientes por nome e email. Como o código é extenso será falado apenas dos trechos do código.
+  
+O codigo pode ser testado com o comando:  
+certifique se de estar no diretório de tests
+```bash
+pytest --tb=short --no-header -v arquivo-para-ser-testado
+```
+  
+`--tb=short`: Formato menor do traceback  
+`--no-header`: Remove o cabeçalho inicial  
+`-v`: por padão o pytest retorna '.' para PASSED e 'F' para FAILED com -v é possível ver qual teste está sendo testado como no exemplo:  
+![image](https://github.com/SrJohn369/lu_estilo_API_test_BE/assets/106630200/0efc1ad2-42f9-444f-be5d-10bd0b60141e)  
+  
+
+
+##### Detalhamento do Código
+```python
+from tests.configTest import *
+from app.models.clienteModel import Cliente
+```
+  
+Importações:  
+Importa configurações e fixtures necessárias para os testes a partir de tests.configTest.  
+Importa o modelo Cliente para uso nos testes.  
+  
+  
+Teste test_post_cliente:  
+Testa o endpoint de cadastro de cliente (POST [/clientes/](#Clientes)).  
+```python
+# TESTE POST/ cadastro usuario
+def test_post_cliente(client):
+    response = client.post(
+        "/clientes/", 
+        json={
+            "email": "test4@example.com", 
+            "nome": "Test User", 
+            "cpf": "123402678901", 
+        }
+    )
+    assert response.status_code == 200, f"Returned: {response.status_code}"
+    assert response.json()["email"] == "test4@example.com", \
+        f"Returned: {response.json()['email']}"
+```
+  
+Implementação:  
+Envia uma requisição POST para [/clientes/](#Clientes) com dados de um novo cliente.  
+Verifica se o status da resposta é 200 (OK).  
+Verifica se o email do cliente retornado na resposta é o esperado (test4@example.com).  
+  
+  
+Teste test_post_cliente_Error_400: 
+Testa o endpoint de cadastro de cliente para lidar com duplicatas (POST [/clientes/](#Clientes)).  
+```python
+# TESTE POST/ cadastro do mesmo usuario para gerar um 400
+def test_post_cliente_Error_400(client):
+    response = client.post(
+        "/clientes/",
+        json={
+            "email": "test4@example.com",
+            "nome": "Test User",
+            "cpf": "123402678901",
+        }
+    )
+    assert response.status_code == 400, f"Returned: {response.status_code}"
+```
+  
+Implementação:  
+Envia uma requisição POST para [/clientes/](#Clientes) com os mesmos dados de um cliente já existente.  
+Verifica se o status da resposta é 400 (Bad Request), indicando que o cliente já existe.  
+  
+  
+Teste test_get_clientes:  
+Testa o endpoint de listagem de clientes (GET [/clientes/](#Clientes)).  
+```python
+# TESTE GET/ todos clientes
+def test_get_clientes(client, db_session):
+    db_session.add(
+        Cliente(
+            email="alice@example.com",
+            nome="Alice",
+            cpf="12345678902"
+        )
+    )
+    db_session.add(
+        Cliente(
+            email="bob@example.com",
+            nome="Bob",
+            cpf="12345678903"
+        )
+    )
+    db_session.commit()
+
+    response = client.get("/clientes/")
+    assert response.status_code == 200, f"Returned: {response.status_code}"
+    users = response.json()
+    assert len(users) >= 2, f"Retorno dado: {users}"
+```
+  
+Implementação:  
+Adiciona dois clientes (Alice e Bob) diretamente no banco de dados.  
+Envia uma requisição GET para [/clientes/](#Clientes).  
+Verifica se o status da resposta é 200 (OK).  
+Verifica se a lista de clientes retornada contém pelo menos 2 clientes.  
+  
+  
+Teste test_get_cliente_by_nome:  
+Testa o endpoint de listagem de clientes com filtro por nome (GET [/clientes/?nome=Alice](#Clientes)).  
+```python
+# TESTE GET/ filtro por nome
+def test_get_cliente_by_nome(client):
+    response = client.get("/clientes/?nome=Alice")
+    assert response.status_code == 200, f"Returned: {response.status_code}"
+    users = response.json()
+    assert len(users) == 1, f"Returned: {users}"
+    assert users[0]["nome"] == "Alice", f"Returned: {users}"
+```
+  
+Implementação:  
+Envia uma requisição GET para [/clientes/](#Clientes) com o parâmetro de consulta nome=Alice.  
+Verifica se o status da resposta é 200 (OK).  
+Verifica se a lista de clientes retornada contém exatamente um cliente e se o nome do cliente é Alice.  
+  
+  
+Teste test_get_cliente_by_email:  
+Testa o endpoint de listagem de clientes com filtro por email (GET [/clientes/?email=bob@example.com](#Clientes)).  
+```python
+# TESTE GET/ filtro por email
+def test_get_cliente_by_email(client):
+    response = client.get("/clientes/?email=bob@example.com")
+    assert response.status_code == 200, f"Returned: {response.status_code}"
+    users = response.json()
+    assert len(users) == 1, f"Returned: {users}"
+    assert users[0]["email"] == "bob@example.com", f"Returned: {users}"
+```
+  
+Implementação:  
+Envia uma requisição GET para [/clientes/](#Clientes) com o parâmetro de consulta email=bob@example.com.  
+Verifica se o status da resposta é 200 (OK).  
+Verifica se a lista de clientes retornada contém exatamente um cliente e se o email do cliente é bob@example.com  
