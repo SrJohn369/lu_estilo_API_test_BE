@@ -273,14 +273,14 @@ Dentre outras que estão listados e devem ser instaladas usando o comando:
 pip install -r requirements.txt
 ```
 
+---
 
 ### main.py
-🚧 em construção 🚧
 ##### DESCRIÇÃO 
 
 ---
 
-Arquivo principal da aplicação.  
+Este código cria uma aplicação web usando o framework FastAPI. Ele gerencia o ciclo de vida da aplicação, conectando-se ao banco de dados ao iniciar e desconectando-se ao finalizar. As rotas da aplicação são definidas em app.include_router() e são incluídas na instância principal da aplicação.    
 Ao usar o comando:
 ```bash
 fastapi dev main.py
@@ -291,7 +291,64 @@ O framework irá identificar a instância do FastAPI() e iniciará todo trabalho
 
 ##### CÓDIGO 
 ```python
+import sentry_sdk
+
+from fastapi import FastAPI
+
+from contextlib import asynccontextmanager
+
+from app.views import clienteView
+from app.db.database import database, init_db
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await database.connect()
+    init_db()
+    yield 
+    await database.disconnect()
+
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(clienteView.router)
 ```
+As views são importadas de app/views
+  
+`sentry_sdk`: Esta biblioteca é usada para monitoramento de erros e desempenho.  
+`FastAPI`: Importamos a classe FastAPI do framework FastAPI, que é usada para criar nossa aplicação web.  
+`asynccontextmanager`: Importamos asynccontextmanager do módulo contextlib para criar um gerenciador de contexto assíncrono.  
+`database` e `init_db`: Importamos database, que é nosso objeto de conexão com o banco de dados, e init_db, que é uma função para inicializar o banco de dados.  
+
+```python
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await database.connect()
+    init_db()
+    yield 
+    await database.disconnect()
+```
+Neste trecho do código definimos uma função para gerenciar a conexão com o banco de dados durante o ciclo de vida da aplicação.  
+
+`@asynccontextmanager`: Este decorador transforma a função lifespan em um gerenciador de contexto assíncrono.  
+`async def lifespan(app: FastAPI)`: Definimos uma função assíncrona chamada lifespan que aceita nossa aplicação FastAPI como argumento.  
+`await database.connect()`: Estabelecemos a conexão com o banco de dados quando a aplicação inicia.  
+`init_db()`: Inicializamos o banco de dados (por exemplo, criando tabelas ou inserindo dados iniciais).  
+`yield`: Pausamos a função até que a aplicação esteja pronta para ser encerrada. Após o yield, qualquer código é executado quando a aplicação está sendo finalizada.  
+`await database.disconnect()`: Desconectamos do banco de dados quando a aplicação está sendo encerrada.  
+
+Criamos uma instância da nossa aplicação FastAPI e passamos o gerenciador de contexto lifespan para gerenciar o ciclo de vida da aplicação.
+```python
+app = FastAPI(lifespan=lifespan)
+```
+`app = FastAPI(lifespan=lifespan)`: Criamos uma instância da aplicação FastAPI e especificamos que queremos usar o gerenciador de contexto `lifespan` para gerenciar o ciclo de vida da aplicação.  
+
+Incluímos as rotas definidas em clienteView na nossa aplicação FastAPI.
+```python
+app.include_router(clienteView.router)
+```
+
+---
+
 ### clienteModel.py
 🚧 em construção 🚧
 ### clienteView.py
