@@ -821,13 +821,244 @@ O que a Função faz:
  
 ---
   
-
 ### auth.py
-🚧 em construção 🚧
+
+##### DESCRIÇÃO
+Este código define funções para hash e verificação de senhas utilizando a biblioteca passlib com o esquema bcrypt.
+  
+---
+  
+##### CÓDIGO
+```python
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+```
+  
+---
+  
+Detalhamento do Código:  
+Importação:  
+`CryptContext`: Importa a classe CryptContext da biblioteca passlib, que é usada para gerenciar esquemas de hashing de senha.  
+  
+Configuração do Contexto de Senhas:  
+`pwd_context`: Cria um contexto de senhas com bcrypt como o esquema de hashing.  
+`schemes=["bcrypt"]`: Define bcrypt como o esquema de hashing a ser usado.  
+`deprecated="auto"`: Define o gerenciamento automático de esquemas obsoletos.  
+  
+  
+Função verify_password:  
+Verifica se uma senha em texto plano corresponde a uma senha hash.  
+```python
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+```
+  
+`plain_password`: A senha em texto plano que precisa ser verificada.  
+`hashed_password`: A senha hash contra a qual a senha em texto plano será verificada.  
+ 
+Utiliza o método verify do pwd_context para comparar a senha em texto plano com a senha hash.  
+Retorna True se as senhas coincidirem, caso contrário, retorna False.  
+  
+Função get_password_hash:  
+Gera um hash para uma senha em texto plano.  
+```python
+def get_password_hash(password):
+    return pwd_context.hash(password)
+```
+
+`password`: A senha em texto plano que precisa ser hash. 
+  
+pwd_context.hash(password): Utiliza o método hash do pwd_context para gerar um hash da senha em texto plano. Retorna o hash da senha.  
+  
+---
+  
 ### jwt.py
-🚧 em construção 🚧
+
+##### DESCRIÇÃO
+Este código implementa a geração e verificação de tokens JWT para autenticação em uma aplicação FastAPI. Ele define funções para criar tokens de acesso e obter o usuário atual a partir do token.
+  
+---
+  
+##### CÓDIGO
+```python
+import os
+
+from datetime import datetime, timedelta
+
+from typing import Optional
+
+from jose import JWTError, jwt
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+
+from sqlalchemy.orm import Session
+
+from app.controllers import clienteController
+from app.schemas.clienteSchema import Cliente
+from app.db.database import get_db
+
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(datetime.UTC) + expires_delta
+    else:
+        expire = datetime.now(datetime.UTC) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = clienteController.get_cliente_by_id(db, user_id=user_id)
+    if user is None:
+        raise credentials_exception
+    return user
+```
+  
+Detalhamento do Código:  
+```python
+import os
+
+from datetime import datetime, timedelta
+
+from typing import Optional
+
+from jose import JWTError, jwt
+
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+
+from sqlalchemy.orm import Session
+
+from app.controllers import clienteController
+from app.schemas.clienteSchema import Cliente
+from app.db.database import get_db
+```
+  
+Importações:
+`os`: Utilizado para acessar variáveis de ambiente.  
+`datetime e timedelta`: Utilizados para manipular datas e tempos.  
+`Optional`: Utilizado para anotações de tipos opcionais.  
+`jose`: Biblioteca para manipulação de tokens JWT.  
+`fastapi`: Importa componentes do FastAPI para tratamento de dependências, exceções HTTP e status.   
+`fastapi.security`: Importa OAuth2PasswordBearer para implementar OAuth2.  
+`sqlalchemy.orm`: Importa Session para interagir com o banco de dados.  
+Importa controladores, esquemas, e função de banco de dados de módulos internos.
+  
+  
+Configurações e Inicializações:  
+```python
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+```
+  
+`SECRET_KEY`: Obtém a chave secreta para assinatura dos tokens JWT a partir das variáveis de ambiente.  
+`ALGORITHM`: Define o algoritmo de criptografia a ser usado (HS256).  
+`ACCESS_TOKEN_EXPIRE_MINUTES`: Define o tempo de expiração dos tokens de acesso (30 minutos).  
+`oauth2_scheme`: Configura OAuth2 com o fluxo de senha, especificando o endpoint token para obtenção dos tokens.  
+  
+  
+Função create_access_token:  
+Cria um token de acesso JWT com dados fornecidos e um tempo de expiração opcional.  
+```python
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(datetime.UTC) + expires_delta
+    else:
+        expire = datetime.now(datetime.UTC) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+```
+  
+`data`: dict: Dados a serem incluídos no token.  
+`expires_delta: Optional[timedelta]`: Tempo opcional de expiração do token.  
+  
+O que a Função faz:  
+Copia os dados fornecidos para to_encode.  
+Calcula a data de expiração com base em expires_delta ou um valor padrão de 15 minutos.  
+Adiciona a expiração aos dados e codifica o token com a chave secreta e o algoritmo especificado.  
+Retorna o token JWT codificado.  
+  
+  
+Função get_current_user:  
+Obtém o usuário atual a partir do token JWT fornecido.  
+```python
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = clienteController.get_cliente_by_id(db, user_id=user_id)
+    if user is None:
+        raise credentials_exception
+    return user
+```
+  
+`db: Session = Depends(get_db)`: A sessão do banco de dados.  
+`token: str = Depends(oauth2_scheme)`: O token JWT obtido através do esquema OAuth2.  
+  
+  
+O que a Função faz:  
+- Define uma exceção para credenciais inválidas.
+- Tenta decodificar o token JWT usando a chave secreta e o algoritmo especificado.
+- Obtém o user_id do payload do token.
+- Se o user_id não estiver presente ou ocorrer um erro ao decodificar o token, lança uma exceção.
+- Busca o usuário no banco de dados usando o user_id.
+- Se o usuário não for encontrado, lança uma exceção.
+- Retorna o usuário obtido do banco de dados.
+  
+---
+  
+
 ### clienteSchema.py
 🚧 em construção 🚧
+##### DESCRIÇÃO
+Este código define modelos de dados para clientes usando Pydantic, especificando as validações e esquemas necessários para cadastro e representação de clientes na aplicação.  
+  
+---
+  
+
+##### CÓDIGO
+
 ### configTest.py
 🚧 em construção 🚧
 ### clienteTest.py
