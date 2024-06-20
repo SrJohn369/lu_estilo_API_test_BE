@@ -1,5 +1,6 @@
 from app.schemas.clienteSchema import Cliente as ClienteSchema
 from app.schemas.clienteSchema import ClienteCadastro
+from app.schemas.clienteSchema import ClienteUpdate
 from app.models.clienteModel import Cliente as ClienteModel
 
 from sqlalchemy.orm import Session
@@ -42,7 +43,7 @@ def create_cliente(cliente: ClienteCadastro, db: Session):
     return db_cliente
 
 
-# PUT/ Atualiza cliente
+# PUT/ Atualiza todos dados cliente
 def put_cliente(db: Session, id: str, cliente_data: ClienteCadastro):
     cliente = db.query(ClienteModel).filter(ClienteModel.id == id).first()
     if cliente:
@@ -63,3 +64,19 @@ def delete_cliente(db: Session, id: str):
         db.commit()
         return cliente
     return None
+
+
+# PATCH/ Atualiza parcialmente cliente
+def patch_cliente(db: Session, id: str, cliente_data: ClienteUpdate):
+    cliente = db.query(ClienteModel).filter(ClienteModel.id == id).first()
+    if not cliente:
+        return None
+    if cliente_data.email is not None:
+        cliente.email = cliente_data.email
+    if cliente_data.nome is not None:
+        cliente.nome = cliente_data.nome
+    if cliente_data.cpf is not None:
+        cliente.cpf = cliente_data.cpf
+    db.commit()
+    db.refresh(cliente)
+    return cliente

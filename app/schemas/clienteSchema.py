@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
 
 
 class ClienteBase(BaseModel):
@@ -14,6 +15,12 @@ class ClienteCadastro(ClienteBase):
     preenchidos pois são primary key
     '''
     pass
+
+
+class ClienteUpdate(BaseModel):
+    email: Optional[str] = None
+    nome: Optional[str] = None
+    cpf: Optional[str] = None
 
 
 class Cliente(ClienteBase):

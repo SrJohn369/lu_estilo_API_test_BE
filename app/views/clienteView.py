@@ -8,7 +8,7 @@ from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
 from app.controllers import clienteController
-from app.schemas.clienteSchema import Cliente, ClienteCadastro
+from app.schemas.clienteSchema import Cliente, ClienteCadastro, ClienteUpdate
 from app.models.clienteModel import Cliente as ClienteModel
 from app.db.database import get_db
 
@@ -50,3 +50,28 @@ def read_clientes_by_id( id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                              detail="Cliente não encontrado!")
     return cliente
+
+
+# PUT/ Atualiza todos os dados do cliente
+@router.put("/clientes/{id}", response_model=Cliente, tags=["clientes"])
+def update_cliente(id: str, cliente: ClienteCadastro, db: Session = Depends(get_db)):
+    cliente = clienteController.put_cliente(db=db, id=id, cliente_data=cliente)
+    return cliente
+
+
+# PATCH/ Atualiza parcialmente cliente
+@router.patch("/clientes/{id}", response_model=Cliente)
+def update_parcial_cliente(id: str, cliente: ClienteUpdate, db: Session = Depends(get_db)):
+    db_cliente = clienteController.patch_cliente(db, id, cliente)
+    if db_cliente is None:
+        raise HTTPException(status_code=404, detail="Cliente not found")
+    return db_cliente
+
+
+# DELETE/ Exclui cliente
+@router.delete("/clientes/{id}", response_model=Cliente)
+def delete_cliente_endpoint(id: str, db: Session = Depends(get_db)):
+    db_cliente = clienteController.delete_cliente(db, id)
+    if db_cliente is None:
+        raise HTTPException(status_code=404, detail="Cliente not found")
+    return db_cliente

@@ -106,3 +106,9 @@ def test_get_clientes_by_id(client, db_session):
 def test_get_cliente_by_id_Error_404(client):
     response = client.get("/clientes/123456ewert")
     assert response.status_code == 404, f"Returned: {response.status_code}"
+    
+
+def test_put_cliete(client):
+    response = client.put(
+        
+    )
