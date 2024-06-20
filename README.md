@@ -277,9 +277,7 @@ pip install -r requirements.txt
 
 ### main.py
 ##### DESCRIÇÃO 
-
----
-
+  
 Este código cria uma aplicação web usando o framework FastAPI. Ele gerencia o ciclo de vida da aplicação, conectando-se ao banco de dados ao iniciar e desconectando-se ao finalizar. As rotas da aplicação são definidas em app.include_router() e são incluídas na instância principal da aplicação.    
 Ao usar o comando:
 ```bash
@@ -342,7 +340,7 @@ app = FastAPI(lifespan=lifespan)
 ```
 `app = FastAPI(lifespan=lifespan)`: Criamos uma instância da aplicação FastAPI e especificamos que queremos usar o gerenciador de contexto `lifespan` para gerenciar o ciclo de vida da aplicação.  
 
-Incluímos as rotas definidas em clienteView na nossa aplicação FastAPI.
+Incluímos as rotas definidas como [clienteView](#clienteViewpy), na nossa aplicação FastAPI.
 ```python
 app.include_router(clienteView.router)
 ```
@@ -350,9 +348,205 @@ app.include_router(clienteView.router)
 ---
 
 ### clienteModel.py
-🚧 em construção 🚧
+##### DESCRIÇÃO
+
+Este código define um modelo de dados para a tabela clientes usando SQLAlchemy. A tabela armazena informações sobre clientes, incluindo id, nome, email e cpf. A coluna id é um UUID gerado automaticamente, e há uma restrição de chave primária composta nas colunas email e cpf.  
+  
+---
+
+##### CÓDIGO
+```python
+import uuid
+
+from sqlalchemy import Column, String, PrimaryKeyConstraint
+from app.db.database import Base
+
+
+# Cria tabela clientes
+class Cliente(Base):
+    __tablename__ = "clientes"
+
+    id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    nome = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    cpf = Column(String(length=14), nullable=False)
+
+    primary_key_constraint = PrimaryKeyConstraint("email", "cpf", name="pk_cliente")
+```
+  
+---
+  
+##### Detalhamento do Código
+```python
+import uuid
+from sqlalchemy import Column, String, PrimaryKeyConstraint
+from app.db.database import Base
+```
+
+`uuid`: Biblioteca para gerar identificadores únicos universais (UUID).  
+`Column`, `String`, `PrimaryKeyConstraint`: Componentes do SQLAlchemy para definir colunas e restrições de tabelas.  
+`Base`: Classe base de onde todos os modelos de tabela herdam, fornecida pelo módulo [app.db.database](#databasepy).  
+
+
+Definição da Classe
+```python
+class Cliente(Base):
+    __tablename__ = "clientes"
+```
+  
+`Cliente`: Define um modelo de dados que mapeia para a tabela clientes no banco de dados.  
+`__tablename__`: Nome da tabela no banco de dados.  
+
+  
+Definição das Colunas
+```python
+id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
+nome = Column(String, nullable=False)
+email = Column(String, nullable=False)
+cpf = Column(String(length=14), nullable=False)
+```
+  
+`id`: Coluna do tipo String com comprimento de 36 caracteres. É a chave primária e usa um UUID gerado automaticamente como valor padrão.  
+`nome`: Coluna do tipo String que não pode ser nula.  
+`email`: Coluna do tipo String que não pode ser nula.
+`cpf`: Coluna do tipo String com comprimento de 14 caracteres que não pode ser nula. Foi posta com 14 caracteres para suportar esta formatação 123.456.789-00
+  
+Restrição de Chave Primária Composta:
+```python
+primary_key_constraint = PrimaryKeyConstraint("email", "cpf", name="pk_cliente")
+```  
+Define uma chave primária composta pelas colunas email e cpf.
+`name="pk_cliente"`: Nomeia a restrição como pk_cliente.
+  
+---
+  
 ### clienteView.py
 🚧 em construção 🚧
+##### DESCRIÇÃO
+
+Este código define endpoints para uma API de gerenciamento de clientes usando FastAPI. Ele permite a criação e leitura de registros de clientes no banco de dados, com suporte para filtragem.
+
+---
+
+##### CÓDIGO
+```python
+from typing import List, Optional
+
+from fastapi import status
+from fastapi.param_functions import Depends, Query
+from fastapi.routing import APIRouter
+from fastapi.exceptions import HTTPException
+
+from sqlalchemy.orm import Session
+
+from app.controllers import clienteController
+from app.schemas.clienteSchema import Cliente, ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
+from app.db.database import get_db
+
+router = APIRouter()
+
+# POST/ cria um cliente
+@router.post("/clientes/", response_model=Cliente, tags=["clientes"])
+def create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db)):
+    # Verifica se já existe
+    db_cliente = db.query(ClienteModel) \
+            .where((ClienteModel.email == cliente.email)).first()
+    if db_cliente:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                            detail=f"Email já cadastrado")
+    
+    return clienteController.create_cliente(db=db, cliente=cliente)
+
+
+# GET/ todos os clientes, função com suporte para filtragem
+@router.get("/clientes/", response_model=List[Cliente], tags=["clientes"])
+def read_clientes(
+        offset: int = 0,
+        limit: int = 15, 
+        nome: Optional[str] = Query(None), 
+        email: Optional[str] = Query(None), 
+        db: Session = Depends(get_db)):
+    clientes = clienteController.get_clientes(db=db, limit=limit, nome=nome, email=email)
+    return clientes
+```
+  
+Detalhamento do Código
+```python
+from typing import List, Optional
+
+from fastapi import status
+from fastapi.param_functions import Depends, Query
+from fastapi.routing import APIRouter
+from fastapi.exceptions import HTTPException
+
+from sqlalchemy.orm import Session
+
+from app.controllers import clienteController
+from app.schemas.clienteSchema import Cliente, ClienteCadastro
+from app.models.clienteModel import Cliente as ClienteModel
+from app.db.database import get_db
+
+router = APIRouter()
+```
+
+Importações  
+`typing`: Importa tipos para anotação, como List e Optional.  
+`fastapi`: Importa componentes do FastAPI para definição de status HTTP, dependências e parâmetros de consulta.  
+`sqlalchemy.orm`: Importa Session para interagir com o banco de dados.
+`[app.controllers](#clienteControllerpy), [app.schemas](#clienteSchemapy), [app.models](#clienteModelpy), [app.db](#databasepy)`: Importa controladores, esquemas, modelos e a função de obtenção da sessão do banco de dados de módulos internos.  
+`APIRouter`: Cria um roteador para definir rotas.  
+`HTTPException`: Define exceções HTTP para erros.  
+
+
+Criação de Cliente (POST)
+```python
+# POST/ cria um cliente
+@router.post("/clientes/", response_model=Cliente, tags=["clientes"])
+def create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db)):
+    # Verifica se já existe
+    db_cliente = db.query(ClienteModel) \
+            .where((ClienteModel.email == cliente.email)).first()
+    if db_cliente:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
+                            detail=f"Email já cadastrado")
+    
+    return clienteController.create_cliente(db=db, cliente=cliente)
+```
+  
+`@router.post("/clientes/", response_model=Cliente, tags=["clientes"])`: Define um endpoint POST para [/clientes/](#Clientes) que retorna um objeto Cliente e é categorizado sob a tag clientes.  
+`create_cliente(cliente: ClienteCadastro, db: Session = Depends(get_db))`: Função que aceita um objeto [ClienteCadastro](#clienteSchemapy) e uma sessão de banco de dados.  
+
+O que a Função faz:
+- Verifica se já existe um cliente com o mesmo email.
+- Se existir, lança uma exceção HTTP 400 com a mensagem "Email já cadastrado".
+- Se não existir, chama a função [create_cliente](#clienteControllerpy) do controlador para criar um novo cliente.  
+
+
+Leitura de Clientes (GET):
+```python
+# GET/ todos os clientes, função com suporte para filtragem
+@router.get("/clientes/", response_model=List[Cliente], tags=["clientes"])
+def read_clientes(
+        offset: int = 0,
+        limit: int = 15, 
+        nome: Optional[str] = Query(None), 
+        email: Optional[str] = Query(None), 
+        db: Session = Depends(get_db)):
+    clientes = clienteController.get_clientes(db=db, limit=limit, nome=nome, email=email)
+    return clientes
+```
+
+`@router.get("/clientes/", response_model=List[Cliente], tags=["clientes"])`: Define um endpoint GET para [/clientes/](#Clientes) que retorna uma lista de objetos Cliente e é categorizado sob a tag clientes.  
+`read_clientes(offset: int = 0, limit: int = 15, nome: Optional[str] = Query(None), email: Optional[str] = Query(None), db: Session = Depends(get_db))`: Função que aceita parâmetros de consulta opcionais (nome, email) e um limite de registros a serem retornados, além de uma sessão de banco de dados e um offset para que em conjunto com limit fornecer suporte para paginação.  
+
+O que a Função faz:
+- Usa os parâmetros de consulta para filtrar os clientes por nome e email, se fornecidos.
+- Limita o número de registros retornados.
+- Chama a função [get_clientes](#clienteControllerpy) do controlador para obter os clientes do banco de dados.
+
+---
+
 ### clienteController.py
 🚧 em construção 🚧
 ### database.py
