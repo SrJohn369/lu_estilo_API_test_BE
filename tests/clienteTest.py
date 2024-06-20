@@ -1,4 +1,4 @@
-from tests.test_config import *
+from tests.configTest import *
 from app.models.clienteModel import Cliente
         
 
