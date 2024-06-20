@@ -344,6 +344,8 @@ Incluímos as rotas definidas como [clienteView](#clienteViewpy), na nossa aplic
 ```python
 app.include_router(clienteView.router)
 ```
+  
+[Voltar ao índice](#Índice)
 
 ---
 
@@ -417,6 +419,9 @@ primary_key_constraint = PrimaryKeyConstraint("email", "cpf", name="pk_cliente")
 ```  
 Define uma chave primária composta pelas colunas email e cpf.
 `name="pk_cliente"`: Nomeia a restrição como pk_cliente.
+
+  
+[Voltar ao índice](#Índice)
   
 ---
   
@@ -544,6 +549,9 @@ O que a Função faz:
 - Usa os parâmetros de consulta para filtrar os clientes por nome e email, se fornecidos.
 - Limita o número de registros retornados.
 - Chama a função [get_clientes](#clienteControllerpy) do controlador para obter os clientes do banco de dados.
+  
+
+  [Voltar ao índice](#Índice)
 
 ---
 
@@ -684,6 +692,9 @@ O que a Função faz:
 - Adiciona a instância à sessão de banco de dados e realiza o commit.
 - Atualiza a instância do cliente com os dados do banco de dados (incluindo o ID gerado).
 - Retorna a instância do cliente criada.
+  
+  
+[Voltar ao índice](#Índice)
 
 ---  
 
@@ -818,7 +829,10 @@ def init_db():
   
 O que a Função faz:  
 - Usa a metadata da base declarativa para criar as tabelas no banco de dados.
- 
+  
+  
+[Voltar ao índice](#Índice)
+   
 ---
   
 ### auth.py
@@ -876,6 +890,9 @@ def get_password_hash(password):
 `password`: A senha em texto plano que precisa ser hash. 
   
 pwd_context.hash(password): Utiliza o método hash do pwd_context para gerar um hash da senha em texto plano. Retorna o hash da senha.  
+  
+  
+[Voltar ao índice](#Índice)
   
 ---
   
@@ -1046,6 +1063,9 @@ O que a Função faz:
 - Se o usuário não for encontrado, lança uma exceção.
 - Retorna o usuário obtido do banco de dados.
   
+  
+  [Voltar ao índice](#Índice)
+  
 ---
   
 
@@ -1123,6 +1143,9 @@ Doc String:
 
 Implementação:  
 - Utiliza todos os campos e validações de ClienteBase sem adicionar novos campos ou validações.
+
+
+  [Voltar ao índice](#Índice)
   
 ---
   
@@ -1232,6 +1255,9 @@ def client():
 Implementação:  
 `with TestClient(app) as c`: Cria uma instância de TestClient com a aplicação FastAPI (app).  
 `yield c`: Fornece o cliente de teste para uso nos testes.  
+
+
+  [Voltar ao índice](#Índice)
   
   ---
   
@@ -1288,7 +1314,7 @@ Verifica se o status da resposta é 200 (OK).
 Verifica se o email do cliente retornado na resposta é o esperado (test4@example.com).  
   
   
-Teste test_post_cliente_Error_400: 
+Teste test_post_cliente_Error_400:  
 Testa o endpoint de cadastro de cliente para lidar com duplicatas (POST [/clientes/](#Clientes)).  
 ```python
 # TESTE POST/ cadastro do mesmo usuario para gerar um 400
@@ -1377,3 +1403,6 @@ Implementação:
 Envia uma requisição GET para [/clientes/](#Clientes) com o parâmetro de consulta email=bob@example.com.  
 Verifica se o status da resposta é 200 (OK).  
 Verifica se a lista de clientes retornada contém exatamente um cliente e se o email do cliente é bob@example.com  
+
+
+[Voltar ao índice](#Índice)
