@@ -26,7 +26,8 @@ def get_clientes(
 
 # GET/{id} Apenas 1 cliente
 def get_cliente_by_id(db: Session, id: str):
-    return db.query(ClienteModel).where(ClienteModel.id == id)
+    cliente = db.query(ClienteModel).where(ClienteModel.id == id).first()
+    return cliente
 
 
 # POST/ cria um cliente
@@ -40,11 +41,24 @@ def create_cliente(cliente: ClienteCadastro, db: Session):
     return db_cliente
 
 
-# PUT/ Atualiza 
-def put_cliente():
-    pass
+# PUT/ Atualiza cliente
+def put_cliente(db: Session, id: str, cliente_data: ClienteCadastro):
+    cliente = db.query(ClienteModel).filter(ClienteModel.id == id).first()
+    if cliente:
+        cliente.email = cliente_data.email
+        cliente.nome = cliente_data.nome
+        cliente.cpf = cliente_data.cpf
+        db.commit()
+        db.refresh(cliente)
+        return cliente
+    return None
 
 
 # DELETE/ Exclui cliente
-def delete_cliente():
-    pass
+def delete_cliente(db: Session, id: str):
+    cliente = db.query(ClienteModel).filter(ClienteModel.id == id).first()
+    if cliente:
+        db.delete(cliente)
+        db.commit()
+        return cliente
+    return None

@@ -37,3 +37,11 @@ def read_clientes(
     clientes = clienteController.get_clientes(db=db, limit=limit, nome=nome, email=email)
     return clientes
 
+
+# GET/ Um cliente por id
+@router.get("/clientes/{id}", response_model=Cliente, tags=["clientes"])
+def read_clientes_by_id( id: str, db: Session = Depends(get_db)):
+    cliente = clienteController.get_cliente_by_id(db=db, id=id)
+    if cliente is None:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cliente não encontrado!")
+    return cliente

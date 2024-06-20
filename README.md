@@ -165,7 +165,46 @@ Response Body:
 <details>
   
   <summary>GET/clientes/{id}</summary>
-  
+  #### Descrição
+Este endpoint retornará todos os clientes com limite de 15 registros por padrão no parâmentro limit  
+
+---  
+#### URL
+`/clientes`
+
+---  
+#### Método HTTP
+GET  
+
+---  
+#### Parâmetros
+##### Path Parameters
+- `id`: Parâmetro obrigatório para buscar usuário
+##### Query Parameters
+- Sem parâmetros
+          
+---  
+#### Respostas
+Curl
+```Curl
+curl -X 'GET' \
+  'http://localhost:8000/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8' \
+  -H 'accept: application/json'
+```
+Request URL
+```url
+http://localhost:8000/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8
+```
+Status code: 200 OK  
+Response Body:  
+```JSON
+{
+  "email": "carlos.jose@emal.com",
+  "nome": "Carl",
+  "cpf": "987.654.987-00",
+  "id": "f4805512-9c23-4e03-9eaf-f756eb3334f8"
+}
+```
 </details>
 
 <details>
