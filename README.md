@@ -690,6 +690,101 @@ O que a Função faz:
 
 ### database.py
 🚧 em construção 🚧
+##### DESCRIÇÃO
+  
+Este código configura a conexão com o banco de dados usando SQLAlchemy e databases. Ele carrega variáveis de ambiente, cria a engine e a sessão do banco de dados, e define funções para gerenciar a sessão e inicializar o banco de dados.  
+  
+---
+  
+##### CÓDIGO
+```python
+import os
+
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+from databases import Database
+
+from dotenv import load_dotenv
+
+
+# carregar variáveis de ambiente
+load_dotenv()
+
+# banco de dados
+DATABASE_URL = os.getenv("DATABASE_URL")
+# --
+database = Database(DATABASE_URL)
+engine = create_engine(DATABASE_URL)
+metadata = MetaData()
+Base = declarative_base()
+
+# cria uma sessão local
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+# inicia banco
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+        
+        
+# Função para criar tabelas
+def init_db():
+    Base.metadata.create_all(bind=engine)
+```
+  
+Detalhamento do Código  
+Importações
+```python
+import os
+
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+from databases import Database
+
+from dotenv import load_dotenv
+
+
+# carregar variáveis de ambiente
+load_dotenv()
+```
+  
+`os`: Utilizado para acessar variáveis de ambiente.  
+`sqlalchemy`: Importa componentes para criar a engine do banco de dados, metadados e a base declarativa.  
+`databases`: Biblioteca para manipulação de bancos de dados de forma assíncrona.  
+`dotenv`: Biblioteca para carregar variáveis de ambiente a partir de um arquivo .env.
+`load_dotenv()`: Carrega variáveis de ambiente do arquivo .env.  
+  
+Configuração do Banco de Dados
+```python
+# banco de dados
+DATABASE_URL = os.getenv("DATABASE_URL")
+# --
+database = Database(DATABASE_URL)
+engine = create_engine(DATABASE_URL)
+metadata = MetaData()
+Base = declarative_base()
+
+# cria uma sessão local
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+```
+  
+`DATABASE_URL = os.getenv("DATABASE_URL")`: Obtém a URL do banco de dados a partir das variáveis de ambiente.  
+`database = Database(DATABASE_URL)`: Cria uma instância de Database para operações assíncronas.  
+`engine = create_engine(DATABASE_URL)`: Cria a engine do banco de dados usando SQLAlchemy.  
+`metadata = MetaData()`: Cria um objeto MetaData para manter informações sobre as tabelas.  
+`Base = declarative_base()`: Cria uma base declarativa para definir os modelos ORM.  
+`SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)`: Cria uma fábrica de sessões para interagir com o banco de dados, sem commits ou flushes automáticos.  
+  
+Função get_db
+Gerencia a sessão do banco de dados.
 ### auth.py
 🚧 em construção 🚧
 ### jwt.py
