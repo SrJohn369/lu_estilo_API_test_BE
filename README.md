@@ -171,6 +171,61 @@ Response Body:
 <details>
   
   <summary>POST/clientes</summary>
+
+#### Descrição
+Este endpoint criará um registro de cliente 
+
+---  
+#### URL
+`/clientes`
+
+---  
+#### Método HTTP
+POST  
+
+---  
+#### Parâmetros
+##### Path Parameters
+- Sem parâmetros obrigatórios
+##### Query Parameters
+- Sem parâmetros
+          
+##### Request body
+```JSON
+{
+  "email": "user@example.com",
+  "nome": "string",
+  "cpf": "string"
+}
+```
+---  
+#### Respostas
+Curl
+```curl
+curl -X 'POST' \
+  'http://localhost:8000/clientes/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "email": "carlos.jose@emal.com",
+  "nome": "Carl",
+  "cpf": "987.654.987-00"
+}'
+```
+Request URL
+```url
+http://localhost:8000/clientes/
+```
+Status code: 200 OK  
+Response Body:  
+```JSON
+{
+  "email": "carlos.jose@emal.com",
+  "nome": "Carl",
+  "cpf": "987.654.987-00",
+  "id": "f4805512-9c23-4e03-9eaf-f756eb3334f8"
+}
+```
   
 </details>  
 
