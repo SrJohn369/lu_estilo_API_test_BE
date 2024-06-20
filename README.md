@@ -689,7 +689,7 @@ O que a Função faz:
 
 
 ### database.py
-🚧 em construção 🚧
+
 ##### DESCRIÇÃO
   
 Este código configura a conexão com o banco de dados usando SQLAlchemy e databases. Ele carrega variáveis de ambiente, cria a engine e a sessão do banco de dados, e define funções para gerenciar a sessão e inicializar o banco de dados.  
@@ -783,8 +783,45 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 `Base = declarative_base()`: Cria uma base declarativa para definir os modelos ORM.  
 `SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)`: Cria uma fábrica de sessões para interagir com o banco de dados, sem commits ou flushes automáticos.  
   
-Função get_db
-Gerencia a sessão do banco de dados.
+Função get_db  
+Gerencia a sessão do banco de dados.  
+```python
+# inicia banco
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+```
+  
+db = SessionLocal(): Cria uma nova sessão.
+try: Inicia um bloco try para utilizar a sessão.
+yield db: Fornece a sessão para uso.
+finally: Assegura que a sessão será fechada após o uso.
+  
+  
+O que a Função faz:  
+- A sessão é criada e fornecida para o contexto de uso.
+- A sessão é fechada ao sair do contexto, garantindo a liberação dos recursos.
+  
+  
+Função init_db  
+Inicializa o banco de dados, criando todas as tabelas definidas na base declarativa.  
+```python
+# Função para criar tabelas
+def init_db():
+    Base.metadata.create_all(bind=engine)
+```
+  
+`ase.metadata.create_all(bind=engine)`: Cria todas as tabelas no banco de dados vinculadas à engine.
+  
+O que a Função faz:  
+- Usa a metadata da base declarativa para criar as tabelas no banco de dados.
+ 
+---
+  
+
 ### auth.py
 🚧 em construção 🚧
 ### jwt.py
