@@ -38,7 +38,7 @@ def read_clientes(
     clientes = clienteController.get_clientes(db=db, offset=offset, limit=limit, nome=nome, email=email)
     if clientes == []:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                             detail="não há clientes com esse esses parâmentros")
+                             detail="não há clientes")
     return clientes
 
 
@@ -60,7 +60,7 @@ def update_cliente(id: str, cliente: ClienteCadastro, db: Session = Depends(get_
 
 
 # PATCH/ Atualiza parcialmente cliente
-@router.patch("/clientes/{id}", response_model=Cliente)
+@router.patch("/clientes/{id}", response_model=Cliente, tags=["clientes"])
 def update_parcial_cliente(id: str, cliente: ClienteUpdate, db: Session = Depends(get_db)):
     db_cliente = clienteController.patch_cliente(db, id, cliente)
     if db_cliente is None:
@@ -69,7 +69,7 @@ def update_parcial_cliente(id: str, cliente: ClienteUpdate, db: Session = Depend
 
 
 # DELETE/ Exclui cliente
-@router.delete("/clientes/{id}", response_model=Cliente)
+@router.delete("/clientes/{id}", response_model=Cliente, tags=["clientes"])
 def delete_cliente_endpoint(id: str, db: Session = Depends(get_db)):
     db_cliente = clienteController.delete_cliente(db, id)
     if db_cliente is None:

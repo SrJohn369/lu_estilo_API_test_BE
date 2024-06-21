@@ -18,7 +18,7 @@ class ClienteCadastro(ClienteBase):
 
 
 class ClienteUpdate(BaseModel):
-    email: Optional[str] = None
+    email: Optional[EmailStr] = None
     nome: Optional[str] = None
     cpf: Optional[str] = None
 
