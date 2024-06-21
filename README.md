@@ -319,7 +319,7 @@ Response Body:
   
 </details>  
 
-details>
+<details>
   
   <summary>PATCH/produtos/{id}</summary>
   
