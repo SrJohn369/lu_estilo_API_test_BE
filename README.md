@@ -83,7 +83,7 @@ URL principal com deploy atual
 ```url
 https://lu-estilo-api-test-be.onrender.com/
 ```
-A documentação dos endpoints tambem podem ser vzualizada de forma dinâmica via Swaager [aqui](https://lu-estilo-api-test-be.onrender.com/docs).
+A documentação dos endpoints tambem podem ser vizualizada de forma dinâmica via Swagger [aqui](https://lu-estilo-api-test-be.onrender.com/docs).
 ### Autenticação
 🚧 em construção 🚧
 
