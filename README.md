@@ -68,6 +68,7 @@ lu_estilo_API_test_Be/
 │   ├── configTest.py
 │   └── clienteTest.py
 ├── requirements.txt
+├── Dockerfile
 ├── alembic.ini
 └── alembic/
     ├── env.py
@@ -78,6 +79,10 @@ lu_estilo_API_test_Be/
 
 
 ## Endpoints
+URL principal  
+```url
+http
+```
 A documentação dos endpoints tambem podem ser vzualizada de forma dinamica no Swaager [aqui]().
 ### Autenticação
 🚧 em construção 🚧
@@ -314,12 +319,13 @@ Response Body:
   
 </details>  
 
-details>
+<details>
   
   <summary>PATCH/produtos/{id}</summary>
   
 </details>  
-
+
+
 <details>
   
   <summary>DELETE/produtos/{id}</summary>
