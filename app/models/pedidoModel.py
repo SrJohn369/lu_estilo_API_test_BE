@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from app.db.database import Base
 
 
-# Cria tabela clientes
+# Cria tabela pedidos
 class Pedido(Base):
     __tablename__ = "produtos"
 

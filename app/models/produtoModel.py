@@ -4,10 +4,9 @@ from sqlalchemy import Column, String, Float, Text, Integer, Date
 from sqlalchemy.orm import relationship
 
 from app.db.database import Base
-from app.models.associacaoModel import pedido_produto_associacao
 
 
-# Cria tabela clientes
+# Cria tabela produtos
 class Produto(Base):
     __tablename__ = "produtos"
 
