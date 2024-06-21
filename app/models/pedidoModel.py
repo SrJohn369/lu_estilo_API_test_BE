@@ -10,7 +10,7 @@ from app.db.database import Base
 class Pedido(Base):
     __tablename__ = "produtos"
 
-    pedido_id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
     cliente_id = Column(String, ForeignKey('clientes.id'))
     status_pedido = Column(String, nullable=False)
     data_pedido = Column(DateTime, nullable=False)

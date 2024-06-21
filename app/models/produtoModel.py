@@ -10,7 +10,7 @@ from app.db.database import Base
 class Produto(Base):
     __tablename__ = "produtos"
 
-    produto_id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(String(length=36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nome_produto = Column(String, nullable=False)
     descricao = Column(Text, nullable=False)
     valor_de_venda = Column(Float, nullable=False)
