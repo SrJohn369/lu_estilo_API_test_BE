@@ -20,5 +20,5 @@ class Produto(Base):
     data_validade = Column(Date, nullable=True)
     estoque_de_validae = Column(Integer, nullable=True)
     
-    pedidos = relationship('Pedido', secondary=pedido_produto_associacao, back_populates='produtos')
+    pedidos = relationship('Pedido', back_populates='produtos')
 

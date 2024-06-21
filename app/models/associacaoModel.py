@@ -1,9 +1,15 @@
-from sqlalchemy import Table, Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+
 from app.db.database import Base
 
-pedido_produto_associacao = Table(
-    'pedido_produto_associacao',
-    Base.metadata,
-    Column('pedido_id', Integer, ForeignKey('pedidos.id'), primary_key=True),
-    Column('produto_id', Integer, ForeignKey('produtos.id'), primary_key=True)
-)
+class PedidoProduto(Base):
+    __tablename__ = 'pedido_produto'
+
+    pedido_id = Column(Integer, ForeignKey('pedidos.id'), primary_key=True)
+    produto_id = Column(Integer, ForeignKey('produtos.id'), primary_key=True)
+    quantidade = Column(Integer)
+
+    pedido = relationship("Pedido", back_populates="produtos")
+    produto = relationship("Produto", back_populates="pedidos")
+
