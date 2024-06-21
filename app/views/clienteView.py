@@ -56,6 +56,9 @@ def read_clientes_by_id( id: str, db: Session = Depends(get_db)):
 @router.put("/clientes/{id}", response_model=Cliente, tags=["clientes"])
 def update_cliente(id: str, cliente: ClienteCadastro, db: Session = Depends(get_db)):
     cliente = clienteController.put_cliente(db=db, id=id, cliente_data=cliente)
+    if cliente is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                             detail="Cliente não encontrado!")
     return cliente
 
 
@@ -64,7 +67,7 @@ def update_cliente(id: str, cliente: ClienteCadastro, db: Session = Depends(get_
 def update_parcial_cliente(id: str, cliente: ClienteUpdate, db: Session = Depends(get_db)):
     db_cliente = clienteController.patch_cliente(db, id, cliente)
     if db_cliente is None:
-        raise HTTPException(status_code=404, detail="Cliente not found")
+        raise HTTPException(status_code=404, detail="Cliente não encontrado!")
     return db_cliente
 
 
@@ -73,5 +76,5 @@ def update_parcial_cliente(id: str, cliente: ClienteUpdate, db: Session = Depend
 def delete_cliente_endpoint(id: str, db: Session = Depends(get_db)):
     db_cliente = clienteController.delete_cliente(db, id)
     if db_cliente is None:
-        raise HTTPException(status_code=404, detail="Cliente not found")
+        raise HTTPException(status_code=404, detail="Cliente não encontrado!")
     return db_cliente
