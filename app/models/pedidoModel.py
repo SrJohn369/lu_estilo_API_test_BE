@@ -15,5 +15,3 @@ class Pedido(Base):
     status_pedido = Column(String, nullable=False)
     data_pedido = Column(DateTime, nullable=False)
     
-    produtos = relationship('Produto', back_populates='pedidos')
-    cliente = relationship('Cliente', back_populates='pedidos')

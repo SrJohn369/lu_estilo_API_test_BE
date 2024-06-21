@@ -16,5 +16,4 @@ class Cliente(Base):
     cpf = Column(String(length=14), nullable=False)
 
     primary_key_constraint = PrimaryKeyConstraint("email", "cpf", name="pk_cliente")
-    cliente = relationship('Pedido', back_populates='clientes')
     
