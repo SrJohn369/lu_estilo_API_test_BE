@@ -120,7 +120,7 @@ Este endpoint retornará todos os clientes com limite de 15 registros por padrã
 
 ---  
 #### URL
-`/clientes`
+`https://lu-estilo-api-test-be.onrender.com/clientes`
 
 ---  
 #### Método HTTP
@@ -133,25 +133,25 @@ GET
 ##### Query Parameters
 - `nome` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *nome* fornecido.
-      - Exemplo: `/clientes/?nome=joao`
+      - Exemplo: `https://lu-estilo-api-test-be.onrender.com/clientes/?nome=joao`
 - `email` (Opcional):
    - irá filtrar clientes trazendo apenas o dados no cliente com *email* fornecido.
-      - Exemplo: `/clientes/?email=claudia.fernanda@email.com`
+      - Exemplo: `https://lu-estilo-api-test-be.onrender.com/clientes/?email=claudia.fernanda@email.com`
 - `limit` (Valor Padrão):
     - Parâmetro padrão das requests GET para clientes que trará apenas 15 resgistros , ou seja, 15 clientes.
-        - Exemplo: `/clientes/?limit=15`
+        - Exemplo: `https://lu-estilo-api-test-be.onrender.com/clientes/?limit=15`
           
 ---  
 #### Respostas
 Curl
 ```Curl
 curl -X 'GET' \
-  'http://localhost:8000/clientes/?limit=15' \
+  'https://lu-estilo-api-test-be.onrender.com/clientes/?limit=15' \
   -H 'accept: application/json'
 ```
 Request URL
 ```url
-http://localhost:8000/clientes/?limit=15&nome=joao&email=claudia.fernanda@email.com
+https://lu-estilo-api-test-be.onrender.com/clientes/?limit=15&nome=joao&email=claudia.fernanda@email.com
 ```
 Status code: 200 OK  
 Response Body:  
@@ -176,7 +176,7 @@ Este endpoint retornará todos os clientes com limite de 15 registros por padrã
 
 ---  
 #### URL
-`/clientes`
+`https://lu-estilo-api-test-be.onrender.com/clientes/{id}`
 
 ---  
 #### Método HTTP
@@ -194,12 +194,12 @@ GET
 Curl
 ```Curl
 curl -X 'GET' \
-  'http://localhost:8000/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8' \
+  'https://lu-estilo-api-test-be.onrender.com/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8' \
   -H 'accept: application/json'
 ```
 Request URL
 ```url
-http://localhost:8000/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8
+https://lu-estilo-api-test-be.onrender.com/clientes/f4805512-9c23-4e03-9eaf-f756eb3334f8
 ```
 Status code: 200 OK  
 Response Body:  
@@ -222,7 +222,7 @@ Este endpoint criará um registro de cliente
 
 ---  
 #### URL
-`/clientes`
+`https://lu-estilo-api-test-be.onrender.com/clientes`
 
 ---  
 #### Método HTTP
@@ -248,7 +248,7 @@ POST
 Curl
 ```curl
 curl -X 'POST' \
-  'http://localhost:8000/clientes/' \
+  'https://lu-estilo-api-test-be.onrender.com/clientes/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -259,7 +259,7 @@ curl -X 'POST' \
 ```
 Request URL
 ```url
-http://localhost:8000/clientes/
+https://lu-estilo-api-test-be.onrender.com/clientes/
 ```
 Status code: 200 OK  
 Response Body:  
