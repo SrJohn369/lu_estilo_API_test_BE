@@ -24,7 +24,7 @@ class ClienteUpdate(BaseModel):
 
 
 class Cliente(ClienteBase):
-    id: str
+    cliente_id: str
     
     class ConfigDict:
         from_attributes = True
