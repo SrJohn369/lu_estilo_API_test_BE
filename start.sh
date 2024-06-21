@@ -2,4 +2,4 @@
 
 cd app
 
-fastapi run main.py
+fastapi run 
