@@ -79,11 +79,11 @@ lu_estilo_API_test_Be/
 
 
 ## Endpoints
-URL principal  
+URL principal com deploy atual
 ```url
-http
+https://lu-estilo-api-test-be.onrender.com/
 ```
-A documentação dos endpoints tambem podem ser vzualizada de forma dinamica no Swaager [aqui]().
+A documentação dos endpoints tambem podem ser vzualizada de forma dinâmica via Swaager [aqui](https://lu-estilo-api-test-be.onrender.com/docs).
 ### Autenticação
 🚧 em construção 🚧
 
