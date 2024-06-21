@@ -79,11 +79,11 @@ lu_estilo_API_test_Be/
 
 
 ## Endpoints
-URL principal  
+URL principal com deploy atual
 ```url
-http
+https://lu-estilo-api-test-be.onrender.com/
 ```
-A documentação dos endpoints tambem podem ser vzualizada de forma dinamica no Swaager [aqui]().
+A documentação dos endpoints tambem podem ser vizualizada de forma dinâmica via Swagger [aqui](https://lu-estilo-api-test-be.onrender.com/docs).
 ### Autenticação
 🚧 em construção 🚧
 
@@ -1390,8 +1390,10 @@ pytest --tb=short --no-header -v arquivo-para-ser-testado
 `--tb=short`: Formato menor do traceback  
 `--no-header`: Remove o cabeçalho inicial  
 `-v`: por padão o pytest retorna '.' para PASSED e 'F' para FAILED com -v é possível ver qual teste está sendo testado como no exemplo:  
-![image](https://github.com/SrJohn369/lu_estilo_API_test_BE/assets/106630200/0efc1ad2-42f9-444f-be5d-10bd0b60141e)  
-  
+
+
+  ![Captura de tela 2024-06-21 022641 TESTESS](https://github.com/SrJohn369/lu_estilo_API_test_BE/assets/106630200/2544d6f1-b530-4e54-afa8-0b7fb01cbb58)
+
 
 
 ##### Detalhamento do Código
